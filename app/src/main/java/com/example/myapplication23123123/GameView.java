@@ -195,14 +195,23 @@ public class GameView extends View {
             }
         }, 500);
     }
-
-    void winGame() {
+    public void endGame(boolean isWin) {
         gameEnded = true;
-        winMessage = "Вы победили!";
-        if (gameEventListener != null) {
-            gameEventListener.onGameEnd(true);
+        buttonsVisible = true; // Показываем кнопки (если у вас есть UI-кнопки, управляйте их видимостью вне этого класса)
+        if (isWin) {
+            winMessage = "Вы победили!";
+        } else {
+            winMessage = "Вы проиграли!";
         }
         invalidate();
+
+        if (gameEventListener != null) {
+            gameEventListener.onGameEnd(isWin);
+        }
+    }
+
+    void winGame() {
+        endGame(true);
     }
 
     public void increaseDifficulty() {
@@ -264,8 +273,8 @@ public class GameView extends View {
 
         paint.setColor(Color.BLACK);
         paint.setTextSize(50);
-        canvas.drawText("Уровень: " + difficulty, 50, 100, paint);
-        canvas.drawText("Очки: " + score, 50, 160, paint);
+        //canvas.drawText("Уровень: " + difficulty, 50, 100, paint);
+        //canvas.drawText("Очки: " + score, 50, 160, paint);
 
         if (!winMessage.isEmpty()) {
             canvas.drawText(winMessage, getWidth()/2, getHeight()/2, textPaint);
