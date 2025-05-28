@@ -18,14 +18,16 @@ public class GameView extends View {
     private boolean isDragging = false;
     private boolean draggingRed = false;
     private boolean buttonsVisible = false;
-    private final int movingCubeSize = 120;
-    private final int targetCubeSize = 150;
+    private final int movingCubeSize = 160;
+    private final int targetCubeSize = 200;
     private final int sizeIncrease = 30;
     private Random random = new Random();
     private boolean gameEnded = false;
     private int difficulty = 1;
     private int centerY;
     private String winMessage = "";
+    private Bitmap redCubeBitmap, blackCubeBitmap, blueCubeBitmap, greenCubeBitmap;
+    private Bitmap backgroundBitmap;
 
     public interface GameEventListener {
         void onScoreChanged(int score);
@@ -56,6 +58,15 @@ public class GameView extends View {
         textPaint.setColor(Color.BLACK);
         textPaint.setTextSize(80);
         textPaint.setTextAlign(Paint.Align.CENTER);
+        redCubeBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ice);
+        blackCubeBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pan);
+        blueCubeBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cat);
+        greenCubeBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rabbit);
+        redCubeBitmap = Bitmap.createScaledBitmap(redCubeBitmap, movingCubeSize, movingCubeSize, true);
+        blackCubeBitmap = Bitmap.createScaledBitmap(blackCubeBitmap, movingCubeSize, movingCubeSize, true);
+        blueCubeBitmap = Bitmap.createScaledBitmap(blueCubeBitmap, targetCubeSize, targetCubeSize, true);
+        greenCubeBitmap = Bitmap.createScaledBitmap(greenCubeBitmap, targetCubeSize, targetCubeSize, true);
+
     }
 
     @Override
@@ -95,6 +106,7 @@ public class GameView extends View {
                 centerX - 400,
                 centerY + targetCubeSize/2
         );
+
 
         blueCube.set(
                 centerX + 400,
@@ -252,23 +264,19 @@ public class GameView extends View {
         canvas.drawColor(Color.LTGRAY);
 
         if (greenCubeVisible) {
-            paint.setColor(Color.GREEN);
-            canvas.drawRect(greenCube, paint);
+            canvas.drawBitmap(greenCubeBitmap, null, greenCube, paint);
         }
 
         if (blueCubeVisible) {
-            paint.setColor(Color.BLUE);
-            canvas.drawRect(blueCube, paint);
+            canvas.drawBitmap(blueCubeBitmap, null, blueCube, paint);
         }
 
         if (redCubeVisible) {
-            paint.setColor(Color.RED);
-            canvas.drawRect(redCube, paint);
+            canvas.drawBitmap(redCubeBitmap, null, redCube, paint);
         }
 
         if (blackCubeVisible) {
-            paint.setColor(Color.BLACK);
-            canvas.drawRect(blackCube, paint);
+            canvas.drawBitmap(blackCubeBitmap, null, blackCube, paint);
         }
 
         paint.setColor(Color.BLACK);
